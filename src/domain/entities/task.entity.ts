@@ -6,7 +6,7 @@ export class TaskEntity {
     public deadline: string,
     public created_by: string,
     public comments?: string,
-    public tags?: string,
+    public tags?: string[],
     public file?: string,
   ) {}
 }
