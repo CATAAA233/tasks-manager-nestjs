@@ -1,3 +1,4 @@
+import { TaskStatusEnum } from '../../../domain/enums';
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -11,11 +12,15 @@ export class TaskEntity extends BaseEntity {
   @Column()
   description: string;
 
-  @Column()
+  @Column({
+    type: 'enum',
+    enum: TaskStatusEnum,
+    default: TaskStatusEnum.TO_DO,
+  })
   status: string;
 
   @Column()
-  deadline: string;
+  deadline: Date;
 
   @Column()
   created_by: string;
@@ -24,7 +29,7 @@ export class TaskEntity extends BaseEntity {
   comments?: string;
 
   @Column()
-  tags?: string[];
+  tags?: string;
 
   @Column()
   file?: string;
