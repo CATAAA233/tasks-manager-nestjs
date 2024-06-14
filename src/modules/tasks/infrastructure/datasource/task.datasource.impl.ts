@@ -94,7 +94,7 @@ export class TaskDatasourceImpl implements TaskDatasource {
             id: userID,
           },
         },
-        relations: ['created_by', 'comments'],
+        relations: ['created_by', 'comments', 'tags'],
       });
 
       const tasks = await tasksDataSource.map(
@@ -107,6 +107,7 @@ export class TaskDatasourceImpl implements TaskDatasource {
             deadline: taskDataSource.deadline,
             created_by: taskDataSource.created_by.name,
             comments: taskDataSource.comments,
+            tags: taskDataSource.tags,
             file: taskDataSource.file,
           }),
       );
@@ -128,7 +129,7 @@ export class TaskDatasourceImpl implements TaskDatasource {
         where: {
           id: taskID,
         },
-        relations: ['created_by', 'comments'],
+        relations: ['created_by', 'comments', 'tags'],
       });
 
       if (!taskDataSource) throw CustomError.notFound('task not found');
@@ -141,6 +142,7 @@ export class TaskDatasourceImpl implements TaskDatasource {
         deadline: taskDataSource.deadline,
         created_by: taskDataSource.created_by.name,
         comments: taskDataSource.comments,
+        tags: taskDataSource.tags,
         file: taskDataSource.file,
       });
 
@@ -164,7 +166,7 @@ export class TaskDatasourceImpl implements TaskDatasource {
         where: {
           id: taskID,
         },
-        relations: ['created_by', 'comments'],
+        relations: ['created_by', 'comments', 'tags'],
       });
 
       if (!taskDataSource) throw CustomError.notFound('task not found');
@@ -201,13 +203,17 @@ export class TaskDatasourceImpl implements TaskDatasource {
         where: {
           id: taskID,
         },
-        relations: ['created_by', 'comments'],
+        relations: ['created_by', 'comments', 'tags'],
       });
 
       if (!taskDataSource) throw CustomError.notFound('task not found');
 
       await taskDataSource.comments.map((comment) => {
         comment.remove();
+      });
+
+      await taskDataSource.tags.map((tag) => {
+        tag.remove();
       });
 
       await taskDataSource.remove();
