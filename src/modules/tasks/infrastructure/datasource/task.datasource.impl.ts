@@ -143,7 +143,7 @@ export class TaskDatasourceImpl implements TaskDatasource {
         where: {
           id: taskID,
         },
-        relations: ['created_by'],
+        relations: ['created_by', 'comments'],
       });
 
       if (!taskDataSource) throw CustomError.notFound('task not found');
@@ -159,6 +159,7 @@ export class TaskDatasourceImpl implements TaskDatasource {
         status: taskDataSource.status,
         deadline: taskDataSource.deadline,
         created_by: taskDataSource.created_by.name,
+        comments: taskDataSource.comments,
         tags: taskDataSource.tags,
         file: taskDataSource.file,
       });
@@ -176,9 +177,18 @@ export class TaskDatasourceImpl implements TaskDatasource {
 
   async deleteTask(taskID: string): Promise<string> {
     try {
-      const taskDataSource = await TaskModel.findOneBy({ id: taskID });
+      const taskDataSource = await TaskModel.findOne({
+        where: {
+          id: taskID,
+        },
+        relations: ['created_by', 'comments'],
+      });
 
       if (!taskDataSource) throw CustomError.notFound('task not found');
+
+      await taskDataSource.comments.map((comment) => {
+        comment.remove();
+      });
 
       await taskDataSource.remove();
 

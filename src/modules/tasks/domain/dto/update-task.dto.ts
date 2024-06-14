@@ -34,10 +34,6 @@ export class UpdateTaskDTO {
   deadline: string;
 
   @IsOptional()
-  @IsString()
-  comments?: string;
-
-  @IsOptional()
   @IsArray()
   @IsString({ each: true })
   tags?: string;
