@@ -17,6 +17,6 @@ import { UsersController } from './controller/users.controller';
       useClass: UserRepositoryImpl,
     },
   ],
-  exports: [UsersService], // Exportar si es necesario en otros módulos
+  exports: [UsersService],
 })
 export class UsersModule {}

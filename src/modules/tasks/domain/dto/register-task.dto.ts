@@ -34,10 +34,6 @@ export class RegisterTaskDTO {
   )
   deadline: string;
 
-  @IsNotEmpty()
-  @IsString()
-  created_by: string;
-
   @IsOptional()
   @IsString()
   comments?: string;
@@ -45,7 +41,7 @@ export class RegisterTaskDTO {
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
-  tags?: string[];
+  tags?: string;
 
   @IsOptional()
   @IsString()

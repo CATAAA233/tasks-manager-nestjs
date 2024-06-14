@@ -30,9 +30,6 @@ export class TaskModel extends BaseEntity {
   deadline: Date;
 
   @Column()
-  created_by: string;
-
-  @Column()
   comments?: string;
 
   @Column()
@@ -42,5 +39,5 @@ export class TaskModel extends BaseEntity {
   file?: string;
 
   @ManyToOne(() => UserModel, (user) => user.tasks)
-  user: UserModel;
+  created_by: UserModel;
 }

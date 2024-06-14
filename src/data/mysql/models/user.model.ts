@@ -21,6 +21,6 @@ export class UserModel extends BaseEntity {
   @Column({ type: 'varchar' })
   password: string;
 
-  @OneToMany(() => TaskModel, (task) => task.user)
+  @OneToMany(() => TaskModel, (task) => task.created_by)
   tasks: TaskModel[];
 }
