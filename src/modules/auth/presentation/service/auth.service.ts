@@ -19,7 +19,7 @@ export class AuthService {
 
     if (!match) throw CustomError.unAuthorized('Incorrect Password');
 
-    const payload = { sub: user.email, username: user.name };
+    const payload = { sub: user.id, username: user.name };
     return await this.jwtService.signAsync(payload);
   }
 }
