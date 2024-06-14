@@ -4,10 +4,11 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { RegisterTaskDTO } from '../../domain';
+import { RegisterTaskDTO, UpdateTaskDTO } from '../../domain';
 import { TasksService } from '../service/tasks.service';
 import { AuthGuard } from 'src/modules/auth/presentation/guard/auth.guard';
 
@@ -35,5 +36,11 @@ export class TasksController {
     const userID = req.user.sub;
 
     return this.tasksService.registerTask(registerTaskData, userID);
+  }
+
+  @UseGuards(AuthGuard)
+  @Put(':id')
+  async updateTask(@Param('id') taskId, @Body() taskData: UpdateTaskDTO) {
+    return this.tasksService.updateTask(taskId, taskData);
   }
 }

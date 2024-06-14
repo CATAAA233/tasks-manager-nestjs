@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { RegisterTaskDTO, TaskRepository } from '../../domain';
+import { RegisterTaskDTO, TaskRepository, UpdateTaskDTO } from '../../domain';
 import { UsersService } from 'src/modules/users/presentation/service/users.service';
 
 @Injectable()
@@ -23,5 +23,9 @@ export class TasksService {
     const user = await this.userService.getUserByID(userID);
     const newTask = await this.taskRepository.register(registerTaskData, user);
     return newTask;
+  }
+
+  async updateTask(taskID: string, taskData: Partial<UpdateTaskDTO>) {
+    return await this.taskRepository.updateTask(taskID, taskData);
   }
 }

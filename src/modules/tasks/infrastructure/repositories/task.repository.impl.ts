@@ -4,6 +4,7 @@ import {
   TaskDatasource,
   TaskEntity,
   TaskRepository,
+  UpdateTaskDTO,
 } from '../../domain';
 import { UserEntity } from 'src/modules/users/domain';
 
@@ -25,5 +26,12 @@ export class TaskRepositoryImpl implements TaskRepository {
     user: UserEntity,
   ): Promise<TaskEntity> {
     return this.taskDataSource.register(registerTaskDto, user);
+  }
+
+  updateTask(
+    taskID: string,
+    taskData: Partial<UpdateTaskDTO>,
+  ): Promise<TaskEntity> {
+    return this.taskDataSource.updateTask(taskID, taskData);
   }
 }

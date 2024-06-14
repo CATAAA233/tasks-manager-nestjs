@@ -1,6 +1,7 @@
 import { UserEntity } from 'src/modules/users/domain';
 import { RegisterTaskDTO } from '../dto/register-task.dto';
 import { TaskEntity } from '../entities/task.entity';
+import { UpdateTaskDTO } from '../dto/update-task.dto';
 
 export abstract class TaskDatasource {
   abstract register(
@@ -12,5 +13,8 @@ export abstract class TaskDatasource {
 
   abstract getTaskById(taskID: string): Promise<TaskEntity>;
 
-  abstract updateTask(TaskID: string): Promise<TaskEntity>;
+  abstract updateTask(
+    TaskID: string,
+    newData: Partial<UpdateTaskDTO>,
+  ): Promise<TaskEntity>;
 }

@@ -1,5 +1,7 @@
 export * from './dto/register-task.dto';
 
+export * from './dto/update-task.dto';
+
 export * from './entities/task.entity';
 
 export * from '../../../shared/domain/errors/custom.error';

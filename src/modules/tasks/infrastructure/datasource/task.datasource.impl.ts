@@ -4,6 +4,7 @@ import {
   RegisterTaskDTO,
   TaskDatasource,
   TaskEntity,
+  UpdateTaskDTO,
 } from '../../domain';
 import { UserModel } from 'src/data/mysql/models/user.model';
 
@@ -86,6 +87,38 @@ export class TaskDatasourceImpl implements TaskDatasource {
       taskDataSource.comments,
       taskDataSource.tags,
       taskDataSource.file,
+    );
+
+    return task;
+  }
+
+  async updateTask(
+    taskID: string,
+    newData: Partial<UpdateTaskDTO>,
+  ): Promise<TaskEntity> {
+    const taskDataSource = await TaskModel.findOne({
+      where: {
+        id: taskID,
+      },
+      relations: ['created_by'],
+    });
+
+    if (!taskDataSource) throw CustomError.notFound('task not found');
+
+    const taskUpdated = Object.assign(taskDataSource, newData);
+
+    await taskUpdated.save();
+
+    const task = await new TaskEntity(
+      taskUpdated.id,
+      taskUpdated.title,
+      taskUpdated.description,
+      taskUpdated.status,
+      taskUpdated.deadline,
+      taskUpdated.created_by.name,
+      taskUpdated.comments,
+      taskUpdated.tags,
+      taskUpdated.file,
     );
 
     return task;
