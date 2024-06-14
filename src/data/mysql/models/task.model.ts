@@ -29,13 +29,13 @@ export class TaskModel extends BaseEntity {
   @Column()
   deadline: Date;
 
-  @Column()
+  @Column({ nullable: true })
   comments?: string;
 
-  @Column()
+  @Column({ nullable: true })
   tags?: string;
 
-  @Column()
+  @Column({ nullable: true })
   file?: string;
 
   @ManyToOne(() => UserModel, (user) => user.tasks)

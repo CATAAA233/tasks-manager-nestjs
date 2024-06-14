@@ -15,9 +15,6 @@ export class TaskDatasourceImpl implements TaskDatasource {
     try {
       const newTask = Object.assign(new TaskModel(), {
         ...registerTaskDto,
-        comments: 'this is a comment',
-        tags: 'this is a tag',
-        file: 'this is a file URL',
       });
 
       newTask.created_by = user;
