@@ -77,6 +77,8 @@ export class TaskDatasourceImpl implements TaskDatasource {
       relations: ['created_by'],
     });
 
+    if (!taskDataSource) throw CustomError.notFound('task not found');
+
     const task = await new TaskEntity(
       taskDataSource.id,
       taskDataSource.title,
