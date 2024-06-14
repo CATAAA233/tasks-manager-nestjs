@@ -1,6 +1,6 @@
-import { RegisterTaskDTO } from '../dto/tasks/register-task.dto';
+import { RegisterTaskDTO } from '../dto/register-task.dto';
 import { TaskEntity } from '../entities/task.entity';
 
-export abstract class TaskRepository {
+export abstract class TaskDatasource {
   abstract register(registerTaskDto: RegisterTaskDTO): Promise<TaskEntity>;
 }

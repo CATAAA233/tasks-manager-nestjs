@@ -1,8 +1,15 @@
-import { TaskStatusEnum } from '../../../domain/enums';
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { TaskStatusEnum } from '../../../modules/tasks/domain/enums';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { UserModel } from './user.model';
 
 @Entity()
-export class TaskEntity extends BaseEntity {
+export class TaskModel extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -33,4 +40,7 @@ export class TaskEntity extends BaseEntity {
 
   @Column()
   file?: string;
+
+  @ManyToOne(() => UserModel, (user) => user.tasks)
+  user: UserModel;
 }
