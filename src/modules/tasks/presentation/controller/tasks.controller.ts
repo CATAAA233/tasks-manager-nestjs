@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { RegisterTaskDTO } from '../../domain';
 import { TasksService } from '../service/tasks.service';
 import { AuthGuard } from 'src/modules/auth/presentation/guard/auth.guard';
@@ -6,6 +14,12 @@ import { AuthGuard } from 'src/modules/auth/presentation/guard/auth.guard';
 @Controller('tasks')
 export class TasksController {
   constructor(private readonly tasksService: TasksService) {}
+
+  @UseGuards(AuthGuard)
+  @Get(':id')
+  async getTaskByID(@Param('id') taskId) {
+    return this.tasksService.getTaskByID(taskId);
+  }
 
   @UseGuards(AuthGuard)
   @Get()

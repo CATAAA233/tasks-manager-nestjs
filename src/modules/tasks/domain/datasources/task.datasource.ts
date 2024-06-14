@@ -9,4 +9,6 @@ export abstract class TaskDatasource {
   ): Promise<TaskEntity>;
 
   abstract getTasks(userID: string): Promise<TaskEntity[]>;
+
+  abstract getTaskById(userID: string): Promise<TaskEntity>;
 }

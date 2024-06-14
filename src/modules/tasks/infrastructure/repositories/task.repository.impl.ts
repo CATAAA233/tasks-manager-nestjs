@@ -12,6 +12,10 @@ export class TaskRepositoryImpl implements TaskRepository {
     @Inject('TaskDatasource') private readonly taskDataSource: TaskDatasource,
   ) {}
 
+  getTaskById(taskID: string): Promise<TaskEntity> {
+    return this.taskDataSource.getTaskById(taskID);
+  }
+
   getTasks(userID: string): Promise<TaskEntity[]> {
     return this.taskDataSource.getTasks(userID);
   }

@@ -9,6 +9,11 @@ export class TasksService {
     private readonly userService: UsersService,
   ) {}
 
+  async getTaskByID(taskID: string) {
+    const task = await this.taskRepository.getTaskById(taskID);
+    return task;
+  }
+
   async getTasksList(userID: string) {
     const newTask = await this.taskRepository.getTasks(userID);
     return newTask;

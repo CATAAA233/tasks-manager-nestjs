@@ -21,6 +21,7 @@ export class TaskDatasourceImpl implements TaskDatasource {
 
       await newTask.save();
       const task = new TaskEntity(
+        newTask.id,
         newTask.title,
         newTask.description,
         newTask.status,
@@ -52,6 +53,7 @@ export class TaskDatasourceImpl implements TaskDatasource {
     const tasks = await tasksDataSource.map(
       (taskDataSource) =>
         new TaskEntity(
+          taskDataSource.id,
           taskDataSource.title,
           taskDataSource.description,
           taskDataSource.status,
@@ -64,5 +66,28 @@ export class TaskDatasourceImpl implements TaskDatasource {
     );
 
     return tasks;
+  }
+
+  async getTaskById(taskID: string): Promise<TaskEntity> {
+    const taskDataSource = await TaskModel.findOne({
+      where: {
+        id: taskID,
+      },
+      relations: ['created_by'],
+    });
+
+    const task = await new TaskEntity(
+      taskDataSource.id,
+      taskDataSource.title,
+      taskDataSource.description,
+      taskDataSource.status,
+      taskDataSource.deadline,
+      taskDataSource.created_by.name,
+      taskDataSource.comments,
+      taskDataSource.tags,
+      taskDataSource.file,
+    );
+
+    return task;
   }
 }
