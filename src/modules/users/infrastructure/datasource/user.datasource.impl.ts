@@ -1,8 +1,10 @@
 import { CustomError } from 'src/shared/domain';
-import { UserDatasource, UserEntity, registerUserDTO } from '../../domain';
+import { UserDatasource, UserEntity, RegisterUserDTO } from '../../domain';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class UserDatasourceImpl implements UserDatasource {
-  async register(registerUserDTO: registerUserDTO): Promise<UserEntity> {
+  async register(registerUserDTO: RegisterUserDTO): Promise<UserEntity> {
     const { name, email, password } = registerUserDTO;
 
     try {
