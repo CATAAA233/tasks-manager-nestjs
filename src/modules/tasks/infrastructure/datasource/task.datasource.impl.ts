@@ -71,7 +71,7 @@ export class TaskDatasourceImpl implements TaskDatasource {
             id: userID,
           },
         },
-        relations: ['created_by'],
+        relations: ['created_by', 'comments'],
       });
 
       const tasks = await tasksDataSource.map(
@@ -83,6 +83,7 @@ export class TaskDatasourceImpl implements TaskDatasource {
             status: taskDataSource.status,
             deadline: taskDataSource.deadline,
             created_by: taskDataSource.created_by.name,
+            comments: taskDataSource.comments,
             tags: taskDataSource.tags,
             file: taskDataSource.file,
           }),
@@ -105,18 +106,19 @@ export class TaskDatasourceImpl implements TaskDatasource {
         where: {
           id: taskID,
         },
-        relations: ['created_by'],
+        relations: ['created_by', 'comments'],
       });
 
       if (!taskDataSource) throw CustomError.notFound('task not found');
 
-      const task = await new TaskEntity({
+      const task = new TaskEntity({
         id: taskDataSource.id,
         title: taskDataSource.title,
         description: taskDataSource.description,
         status: taskDataSource.status,
         deadline: taskDataSource.deadline,
         created_by: taskDataSource.created_by.name,
+        comments: taskDataSource.comments,
         tags: taskDataSource.tags,
         file: taskDataSource.file,
       });
