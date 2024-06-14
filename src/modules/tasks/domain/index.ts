@@ -2,7 +2,7 @@ export * from './dto/register-task.dto';
 
 export * from './entities/task.entity';
 
-export * from './errors/custom.error';
+export * from '../../../shared/domain/errors/custom.error';
 
 export * from './datasources/task.datasource';
 
