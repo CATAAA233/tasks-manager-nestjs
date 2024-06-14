@@ -28,4 +28,8 @@ export class TasksService {
   async updateTask(taskID: string, taskData: Partial<UpdateTaskDTO>) {
     return await this.taskRepository.updateTask(taskID, taskData);
   }
+
+  async deleteTask(taskID: string) {
+    return await this.taskRepository.deleteTask(taskID);
+  }
 }

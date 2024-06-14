@@ -42,87 +42,133 @@ export class TaskDatasourceImpl implements TaskDatasource {
   }
 
   async getTasks(userID: string): Promise<TaskEntity[]> {
-    const tasksDataSource = await TaskModel.find({
-      where: {
-        created_by: {
-          id: userID,
+    try {
+      const tasksDataSource = await TaskModel.find({
+        where: {
+          created_by: {
+            id: userID,
+          },
         },
-      },
-      relations: ['created_by'],
-    });
+        relations: ['created_by'],
+      });
 
-    const tasks = await tasksDataSource.map(
-      (taskDataSource) =>
-        new TaskEntity(
-          taskDataSource.id,
-          taskDataSource.title,
-          taskDataSource.description,
-          taskDataSource.status,
-          taskDataSource.deadline,
-          taskDataSource.created_by.name,
-          taskDataSource.comments,
-          taskDataSource.tags,
-          taskDataSource.file,
-        ),
-    );
+      const tasks = await tasksDataSource.map(
+        (taskDataSource) =>
+          new TaskEntity(
+            taskDataSource.id,
+            taskDataSource.title,
+            taskDataSource.description,
+            taskDataSource.status,
+            taskDataSource.deadline,
+            taskDataSource.created_by.name,
+            taskDataSource.comments,
+            taskDataSource.tags,
+            taskDataSource.file,
+          ),
+      );
 
-    return tasks;
+      return tasks;
+    } catch (error) {
+      if (error instanceof CustomError) {
+        throw error;
+      }
+
+      console.log(error);
+      throw CustomError.internalServer();
+    }
   }
 
   async getTaskById(taskID: string): Promise<TaskEntity> {
-    const taskDataSource = await TaskModel.findOne({
-      where: {
-        id: taskID,
-      },
-      relations: ['created_by'],
-    });
+    try {
+      const taskDataSource = await TaskModel.findOne({
+        where: {
+          id: taskID,
+        },
+        relations: ['created_by'],
+      });
 
-    if (!taskDataSource) throw CustomError.notFound('task not found');
+      if (!taskDataSource) throw CustomError.notFound('task not found');
 
-    const task = await new TaskEntity(
-      taskDataSource.id,
-      taskDataSource.title,
-      taskDataSource.description,
-      taskDataSource.status,
-      taskDataSource.deadline,
-      taskDataSource.created_by.name,
-      taskDataSource.comments,
-      taskDataSource.tags,
-      taskDataSource.file,
-    );
+      const task = await new TaskEntity(
+        taskDataSource.id,
+        taskDataSource.title,
+        taskDataSource.description,
+        taskDataSource.status,
+        taskDataSource.deadline,
+        taskDataSource.created_by.name,
+        taskDataSource.comments,
+        taskDataSource.tags,
+        taskDataSource.file,
+      );
 
-    return task;
+      return task;
+    } catch (error) {
+      if (error instanceof CustomError) {
+        throw error;
+      }
+
+      console.log(error);
+      throw CustomError.internalServer();
+    }
   }
 
   async updateTask(
     taskID: string,
     newData: Partial<UpdateTaskDTO>,
   ): Promise<TaskEntity> {
-    const taskDataSource = await TaskModel.findOne({
-      where: {
-        id: taskID,
-      },
-      relations: ['created_by'],
-    });
+    try {
+      const taskDataSource = await TaskModel.findOne({
+        where: {
+          id: taskID,
+        },
+        relations: ['created_by'],
+      });
 
-    if (!taskDataSource) throw CustomError.notFound('task not found');
+      if (!taskDataSource) throw CustomError.notFound('task not found');
 
-    const taskUpdated = Object.assign(taskDataSource, newData);
+      const taskUpdated = Object.assign(taskDataSource, newData);
 
-    await taskUpdated.save();
+      await taskUpdated.save();
 
-    const task = await new TaskEntity(
-      taskUpdated.id,
-      taskUpdated.title,
-      taskUpdated.description,
-      taskUpdated.status,
-      taskUpdated.deadline,
-      taskUpdated.created_by.name,
-      taskUpdated.comments,
-      taskUpdated.tags,
-      taskUpdated.file,
-    );
+      const task = await new TaskEntity(
+        taskUpdated.id,
+        taskUpdated.title,
+        taskUpdated.description,
+        taskUpdated.status,
+        taskUpdated.deadline,
+        taskUpdated.created_by.name,
+        taskUpdated.comments,
+        taskUpdated.tags,
+        taskUpdated.file,
+      );
 
-    return task;
+      return task;
+    } catch (error) {
+      if (error instanceof CustomError) {
+        throw error;
+      }
+
+      console.log(error);
+      throw CustomError.internalServer();
+    }
+  }
+
+  async deleteTask(taskID: string): Promise<string> {
+    try {
+      const taskDataSource = await TaskModel.findOneBy({ id: taskID });
+
+      if (!taskDataSource) throw CustomError.notFound('task not found');
+
+      await taskDataSource.remove();
+
+      return 'Tasks deleted successfully';
+    } catch (error) {
+      if (error instanceof CustomError) {
+        throw error;
+      }
+
+      console.log(error);
+      throw CustomError.internalServer();
+    }
   }
 }

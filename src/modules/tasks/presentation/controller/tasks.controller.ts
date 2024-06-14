@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -42,5 +43,11 @@ export class TasksController {
   @Put(':id')
   async updateTask(@Param('id') taskId, @Body() taskData: UpdateTaskDTO) {
     return this.tasksService.updateTask(taskId, taskData);
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete(':id')
+  async deleteTask(@Param('id') taskId) {
+    return this.tasksService.deleteTask(taskId);
   }
 }

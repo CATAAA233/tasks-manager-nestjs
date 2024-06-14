@@ -34,4 +34,8 @@ export class TaskRepositoryImpl implements TaskRepository {
   ): Promise<TaskEntity> {
     return this.taskDataSource.updateTask(taskID, taskData);
   }
+
+  deleteTask(taskID: string): Promise<string> {
+    return this.taskDataSource.deleteTask(taskID);
+  }
 }

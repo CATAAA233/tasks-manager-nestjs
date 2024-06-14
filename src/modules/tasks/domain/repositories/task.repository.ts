@@ -17,4 +17,6 @@ export abstract class TaskRepository {
     TaskID: string,
     taskData: Partial<UpdateTaskDTO>,
   ): Promise<TaskEntity>;
+
+  abstract deleteTask(taskID: string): Promise<string>;
 }
