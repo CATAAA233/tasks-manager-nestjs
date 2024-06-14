@@ -35,8 +35,9 @@ export class RegisterTaskDTO {
   deadline: string;
 
   @IsOptional()
-  @IsString()
-  comments?: string;
+  @IsArray({ message: 'comments must be an array of strings' })
+  @IsString({ each: true, message: 'every element must be a string' })
+  comments?: string[];
 
   @IsOptional()
   @IsArray()

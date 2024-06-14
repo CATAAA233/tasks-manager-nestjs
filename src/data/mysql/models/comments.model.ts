@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { TaskModel } from './task.model';
 
-@Entity('tasks')
+@Entity('comments')
 export class CommentModel extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;

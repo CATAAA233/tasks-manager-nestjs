@@ -7,6 +7,8 @@ import {
   UpdateTaskDTO,
 } from '../../domain';
 import { UserModel } from 'src/data/mysql/models/user.model';
+import { CommentModel } from 'src/data/mysql/models/comments.model';
+import { CommentEntity } from '../../domain/entities/comment.entity.';
 
 export class TaskDatasourceImpl implements TaskDatasource {
   async register(
@@ -15,20 +17,40 @@ export class TaskDatasourceImpl implements TaskDatasource {
   ): Promise<TaskEntity> {
     try {
       const newTask = Object.assign(new TaskModel(), {
-        ...registerTaskDto,
+        title: registerTaskDto.title,
+        description: registerTaskDto.description,
+        deadline: registerTaskDto.deadline,
+        status: registerTaskDto.status,
       });
 
       newTask.created_by = user;
-
       await newTask.save();
-      const task = new TaskEntity(
-        newTask.id,
-        newTask.title,
-        newTask.description,
-        newTask.status,
-        newTask.deadline,
-        newTask.created_by.name,
+
+      const comments = await Promise.all(
+        registerTaskDto.comments.map(async (comment) => {
+          const commentDataSource = new CommentModel();
+          commentDataSource.title = comment;
+          commentDataSource.task = newTask;
+          await commentDataSource.save();
+
+          return new CommentEntity({
+            id: commentDataSource.id,
+            title: commentDataSource.title,
+          });
+        }),
       );
+
+      const task = new TaskEntity({
+        id: newTask.id,
+        title: newTask.title,
+        description: newTask.description,
+        status: newTask.status,
+        deadline: newTask.deadline,
+        created_by: newTask.created_by.name,
+        comments: comments,
+        tags: newTask.tags,
+        file: newTask.file,
+      });
 
       return task;
     } catch (error) {
@@ -54,16 +76,16 @@ export class TaskDatasourceImpl implements TaskDatasource {
 
       const tasks = await tasksDataSource.map(
         (taskDataSource) =>
-          new TaskEntity(
-            taskDataSource.id,
-            taskDataSource.title,
-            taskDataSource.description,
-            taskDataSource.status,
-            taskDataSource.deadline,
-            taskDataSource.created_by.name,
-            taskDataSource.tags,
-            taskDataSource.file,
-          ),
+          new TaskEntity({
+            id: taskDataSource.id,
+            title: taskDataSource.title,
+            description: taskDataSource.description,
+            status: taskDataSource.status,
+            deadline: taskDataSource.deadline,
+            created_by: taskDataSource.created_by.name,
+            tags: taskDataSource.tags,
+            file: taskDataSource.file,
+          }),
       );
 
       return tasks;
@@ -88,16 +110,16 @@ export class TaskDatasourceImpl implements TaskDatasource {
 
       if (!taskDataSource) throw CustomError.notFound('task not found');
 
-      const task = await new TaskEntity(
-        taskDataSource.id,
-        taskDataSource.title,
-        taskDataSource.description,
-        taskDataSource.status,
-        taskDataSource.deadline,
-        taskDataSource.created_by.name,
-        taskDataSource.tags,
-        taskDataSource.file,
-      );
+      const task = await new TaskEntity({
+        id: taskDataSource.id,
+        title: taskDataSource.title,
+        description: taskDataSource.description,
+        status: taskDataSource.status,
+        deadline: taskDataSource.deadline,
+        created_by: taskDataSource.created_by.name,
+        tags: taskDataSource.tags,
+        file: taskDataSource.file,
+      });
 
       return task;
     } catch (error) {
@@ -128,17 +150,16 @@ export class TaskDatasourceImpl implements TaskDatasource {
 
       await taskUpdated.save();
 
-      const task = await new TaskEntity(
-        taskUpdated.id,
-        taskUpdated.title,
-        taskUpdated.description,
-        taskUpdated.status,
-        taskUpdated.deadline,
-        taskUpdated.created_by.name,
-        taskUpdated.comments,
-        taskUpdated.tags,
-        taskUpdated.file,
-      );
+      const task = await new TaskEntity({
+        id: taskDataSource.id,
+        title: taskDataSource.title,
+        description: taskDataSource.description,
+        status: taskDataSource.status,
+        deadline: taskDataSource.deadline,
+        created_by: taskDataSource.created_by.name,
+        tags: taskDataSource.tags,
+        file: taskDataSource.file,
+      });
 
       return task;
     } catch (error) {
