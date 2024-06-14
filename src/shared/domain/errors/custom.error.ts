@@ -20,6 +20,6 @@ export class CustomError extends Error {
     return new CustomError(400, message);
   }
   static internalServer(message: string = 'Internal Server Error') {
-    return new CustomError(400, message);
+    return new CustomError(500, message);
   }
 }

@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { UserModel } from './user.model';
 
-@Entity()
+@Entity('tasks')
 export class TaskModel extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;

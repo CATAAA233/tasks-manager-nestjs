@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 import { TaskModel } from './task.model';
 
-@Entity()
+@Entity('users')
 export class UserModel extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -18,7 +18,7 @@ export class UserModel extends BaseEntity {
   @Column({ type: 'varchar', unique: true })
   email: string;
 
-  @Column({ type: 'varchar', length: 20 })
+  @Column({ type: 'varchar' })
   password: string;
 
   @OneToMany(() => TaskModel, (task) => task.user)
