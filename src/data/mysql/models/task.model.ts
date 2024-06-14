@@ -4,9 +4,11 @@ import {
   Column,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { UserModel } from './user.model';
+import { CommentModel } from './comments.model';
 
 @Entity('tasks')
 export class TaskModel extends BaseEntity {
@@ -29,8 +31,8 @@ export class TaskModel extends BaseEntity {
   @Column()
   deadline: Date;
 
-  @Column({ nullable: true })
-  comments?: string;
+  @OneToMany(() => CommentModel, (comment) => comment.task)
+  comments: CommentModel[];
 
   @Column({ nullable: true })
   tags?: string;

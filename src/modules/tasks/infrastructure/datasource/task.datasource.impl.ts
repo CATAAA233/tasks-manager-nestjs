@@ -61,7 +61,6 @@ export class TaskDatasourceImpl implements TaskDatasource {
             taskDataSource.status,
             taskDataSource.deadline,
             taskDataSource.created_by.name,
-            taskDataSource.comments,
             taskDataSource.tags,
             taskDataSource.file,
           ),
@@ -96,7 +95,6 @@ export class TaskDatasourceImpl implements TaskDatasource {
         taskDataSource.status,
         taskDataSource.deadline,
         taskDataSource.created_by.name,
-        taskDataSource.comments,
         taskDataSource.tags,
         taskDataSource.file,
       );
