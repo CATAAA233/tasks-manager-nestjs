@@ -26,4 +26,18 @@ export class UserDatasourceImpl implements UserDatasource {
       throw CustomError.internalServer();
     }
   }
+
+  async getUserByID(userID: string): Promise<UserEntity> {
+    if (!userID) throw CustomError.badRequest('you must enter a user id');
+
+    const user = await UserModel.findOne({ where: { id: userID } });
+    return user;
+  }
+
+  async getUserByEmail(email: string): Promise<UserEntity> {
+    if (!email) throw CustomError.badRequest('you must enter a email');
+
+    const user = await UserModel.findOne({ where: { email } });
+    return user;
+  }
 }

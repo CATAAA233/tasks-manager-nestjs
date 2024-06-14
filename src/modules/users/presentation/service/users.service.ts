@@ -10,4 +10,14 @@ export class UsersService {
   registerUser(registerUserDTO: RegisterUserDTO): Promise<UserEntity> {
     return this.userRepository.register(registerUserDTO);
   }
+
+  getUserByID(userID: string): Promise<UserEntity> {
+    return this.userRepository.getUserByID(userID);
+  }
+
+  getUserByEmail(email: string): Promise<UserEntity> {
+    const user = this.userRepository.getUserByEmail(email);
+
+    return user;
+  }
 }

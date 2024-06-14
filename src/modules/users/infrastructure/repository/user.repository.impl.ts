@@ -14,4 +14,12 @@ export class UserRepositoryImpl implements UserRepository {
   register(registerUserDTO: RegisterUserDTO): Promise<UserEntity> {
     return this.userDataSource.register(registerUserDTO);
   }
+
+  getUserByID(userID: string): Promise<UserEntity> {
+    return this.userDataSource.getUserByID(userID);
+  }
+
+  getUserByEmail(email: string): Promise<UserEntity> {
+    return this.userDataSource.getUserByEmail(email);
+  }
 }

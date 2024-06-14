@@ -9,8 +9,8 @@ import { TaskModel } from './task.model';
 
 @Entity('users')
 export class UserModel extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ type: 'varchar', length: 30 })
   name: string;
