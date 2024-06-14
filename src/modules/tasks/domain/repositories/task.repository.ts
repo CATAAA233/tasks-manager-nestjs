@@ -7,4 +7,6 @@ export abstract class TaskRepository {
     registerTaskDto: RegisterTaskDTO,
     user: UserEntity,
   ): Promise<TaskEntity>;
+
+  abstract getTasks(userID: string): Promise<TaskEntity[]>;
 }

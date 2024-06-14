@@ -38,4 +38,31 @@ export class TaskDatasourceImpl implements TaskDatasource {
       throw CustomError.internalServer();
     }
   }
+
+  async getTasks(userID: string): Promise<TaskEntity[]> {
+    const tasksDataSource = await TaskModel.find({
+      where: {
+        created_by: {
+          id: userID,
+        },
+      },
+      relations: ['created_by'],
+    });
+
+    const tasks = await tasksDataSource.map(
+      (taskDataSource) =>
+        new TaskEntity(
+          taskDataSource.title,
+          taskDataSource.description,
+          taskDataSource.status,
+          taskDataSource.deadline,
+          taskDataSource.created_by.name,
+          taskDataSource.comments,
+          taskDataSource.tags,
+          taskDataSource.file,
+        ),
+    );
+
+    return tasks;
+  }
 }

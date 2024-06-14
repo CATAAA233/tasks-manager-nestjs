@@ -7,4 +7,6 @@ export abstract class TaskDatasource {
     registerTaskDto: RegisterTaskDTO,
     user: UserEntity,
   ): Promise<TaskEntity>;
+
+  abstract getTasks(userID: string): Promise<TaskEntity[]>;
 }

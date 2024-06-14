@@ -9,6 +9,11 @@ export class TasksService {
     private readonly userService: UsersService,
   ) {}
 
+  async getTasksList(userID: string) {
+    const newTask = await this.taskRepository.getTasks(userID);
+    return newTask;
+  }
+
   async registerTask(registerTaskData: RegisterTaskDTO, userID: string) {
     const user = await this.userService.getUserByID(userID);
     const newTask = await this.taskRepository.register(registerTaskData, user);
