@@ -40,9 +40,9 @@ export class RegisterTaskDTO {
   comments?: string[];
 
   @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
-  tags?: string;
+  @IsArray({ message: 'comments must be an array of strings' })
+  @IsString({ each: true, message: 'every element must be a string' })
+  tags?: string[];
 
   @IsOptional()
   @IsString()

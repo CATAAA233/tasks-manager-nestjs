@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { UserModel } from './user.model';
 import { CommentModel } from './comments.model';
+import { TagsModel } from './tags.model';
 
 @Entity('tasks')
 export class TaskModel extends BaseEntity {
@@ -34,8 +35,8 @@ export class TaskModel extends BaseEntity {
   @OneToMany(() => CommentModel, (comment) => comment.task)
   comments: CommentModel[];
 
-  @Column({ nullable: true })
-  tags?: string;
+  @OneToMany(() => TagsModel, (tag) => tag.task)
+  tags: TagsModel[];
 
   @Column({ nullable: true })
   file?: string;

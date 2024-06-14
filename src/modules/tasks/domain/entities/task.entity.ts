@@ -1,4 +1,5 @@
 import { CommentEntity } from './comment.entity.';
+import { TagsEntity } from './tags.entity';
 
 interface Props {
   id: string;
@@ -8,7 +9,7 @@ interface Props {
   deadline: Date;
   created_by: string;
   comments?: CommentEntity[];
-  tags?: string;
+  tags?: TagsEntity[];
   file?: string;
 }
 export class TaskEntity {
@@ -19,7 +20,7 @@ export class TaskEntity {
   public deadline: Date;
   public created_by: string;
   public comments?: CommentEntity[];
-  public tags?: string;
+  public tags?: TagsEntity[];
   public file?: string;
 
   constructor(props: Props) {

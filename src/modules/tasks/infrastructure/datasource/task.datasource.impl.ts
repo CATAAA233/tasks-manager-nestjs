@@ -9,6 +9,8 @@ import {
 import { UserModel } from 'src/data/mysql/models/user.model';
 import { CommentModel } from 'src/data/mysql/models/comments.model';
 import { CommentEntity } from '../../domain/entities/comment.entity.';
+import { TagsModel } from 'src/data/mysql/models/tags.model';
+import { TagsEntity } from '../../domain/entities/tags.entity';
 
 export class TaskDatasourceImpl implements TaskDatasource {
   async register(
@@ -26,19 +28,40 @@ export class TaskDatasourceImpl implements TaskDatasource {
       newTask.created_by = user;
       await newTask.save();
 
-      const comments = await Promise.all(
-        registerTaskDto.comments.map(async (comment) => {
-          const commentDataSource = new CommentModel();
-          commentDataSource.title = comment;
-          commentDataSource.task = newTask;
-          await commentDataSource.save();
+      let comments = [];
+      let tags = [];
 
-          return new CommentEntity({
-            id: commentDataSource.id,
-            title: commentDataSource.title,
-          });
-        }),
-      );
+      if (registerTaskDto.comments) {
+        comments = await Promise.all(
+          registerTaskDto.comments.map(async (comment) => {
+            const commentDataSource = new CommentModel();
+            commentDataSource.title = comment;
+            commentDataSource.task = newTask;
+            await commentDataSource.save();
+
+            return new CommentEntity({
+              id: commentDataSource.id,
+              title: commentDataSource.title,
+            });
+          }),
+        );
+      }
+
+      if (registerTaskDto.tags) {
+        tags = await Promise.all(
+          registerTaskDto.tags.map(async (tag) => {
+            const tagDataSource = new TagsModel();
+            tagDataSource.title = tag;
+            tagDataSource.task = newTask;
+            await tagDataSource.save();
+
+            return new TagsEntity({
+              id: tagDataSource.id,
+              title: tagDataSource.title,
+            });
+          }),
+        );
+      }
 
       const task = new TaskEntity({
         id: newTask.id,
@@ -48,7 +71,7 @@ export class TaskDatasourceImpl implements TaskDatasource {
         deadline: newTask.deadline,
         created_by: newTask.created_by.name,
         comments: comments,
-        tags: newTask.tags,
+        tags: tags,
         file: newTask.file,
       });
 
@@ -84,7 +107,6 @@ export class TaskDatasourceImpl implements TaskDatasource {
             deadline: taskDataSource.deadline,
             created_by: taskDataSource.created_by.name,
             comments: taskDataSource.comments,
-            tags: taskDataSource.tags,
             file: taskDataSource.file,
           }),
       );
@@ -119,7 +141,6 @@ export class TaskDatasourceImpl implements TaskDatasource {
         deadline: taskDataSource.deadline,
         created_by: taskDataSource.created_by.name,
         comments: taskDataSource.comments,
-        tags: taskDataSource.tags,
         file: taskDataSource.file,
       });
 
@@ -160,7 +181,6 @@ export class TaskDatasourceImpl implements TaskDatasource {
         deadline: taskDataSource.deadline,
         created_by: taskDataSource.created_by.name,
         comments: taskDataSource.comments,
-        tags: taskDataSource.tags,
         file: taskDataSource.file,
       });
 
