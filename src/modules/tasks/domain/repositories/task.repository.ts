@@ -10,5 +10,7 @@ export abstract class TaskRepository {
 
   abstract getTasks(userID: string): Promise<TaskEntity[]>;
 
-  abstract getTaskById(userID: string): Promise<TaskEntity>;
+  abstract getTaskById(TaskID: string): Promise<TaskEntity>;
+
+  abstract updateTask(TaskID: string): Promise<TaskEntity>;
 }
